@@ -1,86 +1,58 @@
-import sys
 import math
+import sys
 
 
-class SquareRoots:
+class Sq_Roots:
     """Класс коэффициентов"""
     def __init__(self):
         self.A = 0.0
         self.B = 0.0
         self.C = 0.0
-        self.num_of_roots = 0
-        self.roots_list = []
+        self.root_list = set()
 
-    def get_coef(self, index, prompt):
+    def check_root(self, ind):
+        """Проверка коэфов"""
         try:
-            # Пробуем прочитать коэффициент из командной строки
-            coef_str = sys.argv[index]
+            global coef
+            coef = sys.argv[ind]
         except:
-            # Вводим с клавиатуры
-            print(prompt)
-            coef_str = input()
-        # Переводим строку в действительное число
-        coef = float(coef_str)
-        return coef
+            print("Введите коэффициент {} :".format(ind) )
+            coef = input()
+            #Проверка А на ноль(иначе впоследствие ошибка в делении на ноль)
+            if float(coef) == 0.0 and ind == 1:
+                print("Коэффициент 1 равен 0. Так не пойдет")
+                self.check_root(1)
+        return float(coef)
 
-    def get_coefs(self):
-        '''
-        Чтение трех коэффициентов
-        '''
-        self.coef_A = self.get_coef(1, 'Введите коэффициент А:')
-        self.coef_B = self.get_coef(2, 'Введите коэффициент B:')
-        self.coef_C = self.get_coef(3, 'Введите коэффициент C:')
+    def get_roots(self):
+        """Получение значений коэфов"""
+        self.A = self.check_root(1)
+        self.B = self.check_root(2)
+        self.C = self.check_root(3)
 
-    def calculate_roots(self):
-        '''
-        Вычисление корней квадратного уравнения
-        '''
-        a = self.coef_A
-        b = self.coef_B
-        c = self.coef_C
-        # Вычисление дискриминанта и корней
-        D = b*b - 4*a*c
-        if D == 0.0:
-            root = -b / (2.0*a)
-            self.num_roots = 1
-            self.roots_list.append(root)
-        elif D > 0.0:
-            sqD = math.sqrt(D)
-            root1 = (-b + sqD) / (2.0*a)
-            root2 = (-b - sqD) / (2.0*a)
-            self.num_roots = 2
-            self.roots_list.append(root1)
-            self.roots_list.append(root2)
+    def calculation(self):
+        """Подсчет корней"""
+        #Дискриминант
+        D = self.B**2 - 4*self.A*self.C
+        if (D>=0):
+            self.root_list.add( (-self.B + math.sqrt(D))/ (2*self.A) )
+            self.root_list.add( (-self.B - math.sqrt(D))/ (2*self.A) )
 
-    def print_roots(self):
-        # Проверка отсутствия ошибок при вычислении корней
-        if self.num_roots != len(self.roots_list):
-            print(('Ошибка. Уравнение содержит {} действительных корней, ' +\
-                'но было вычислено {} корней.').format(self.num_roots, len(self.roots_list)))
-        else:
-            if self.num_roots == 0:
-                print('Нет корней')
-            elif self.num_roots == 1:
-                print('Один корень: {}'.format(self.roots_list[0]))
-            elif self.num_roots == 2:
-                print('Два корня: {} и {}'.format(self.roots_list[0], \
-                    self.roots_list[1]))
-
+    def print_ans(self):
+        """Вывод ответов"""
+        if len(self.root_list)==0:
+            print("Нет корней, дискриминант меньше нуля :(")
+            return
+        print("Корни:")
+        for e in self.root_list:
+            print(e, " ")
 
 def main():
-    '''
-    Основная функция
-    '''
-    # Создание объекта класса
-    r = SquareRoots()
-    # Последовательный вызов необходимых методов
-    r.get_coefs()
-    r.calculate_roots()
-    r.print_roots()
+    """Основная функция"""
+    sr = Sq_Roots()
+    sr.get_roots()
+    sr.calculation()
+    sr.print_ans()
 
-# Если сценарий запущен из командной строки
 if __name__ == "__main__":
     main()
-
-# Пример запуска
-# roots_oop.py 1 0 -4
