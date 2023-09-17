@@ -1,7 +1,6 @@
 import math
 import sys
 
-
 class Sq_Roots:
     """Класс коэффициентов"""
     def __init__(self):

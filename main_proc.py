@@ -1,8 +1,6 @@
 import math
 import sys
 
-
-
 def check_root(ind):
     """Проверка коэфов -> возвращает один коэф"""
     try:
@@ -54,7 +52,6 @@ def main():
     """Основная функция"""
     coef_list = [0.0]*3
     all_process(coef_list)
-
 
 if __name__ == "__main__":
     main()
